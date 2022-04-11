@@ -2,7 +2,7 @@ package com.example.calendar.fragment
 
 import java.util.*
 
-class FurangCalendar(date: Date) {
+class MyCalendar(date: Date) {
 
     companion object {
         const val DAYS_OF_WEEK = 7

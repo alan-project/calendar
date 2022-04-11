@@ -1,60 +1,39 @@
 package com.example.calendar
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.calendar.common.BaseFragmentFactory
-import com.example.calendar.fragment.FirstFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.calendar.databinding.ActivityMainBinding
+import com.example.calendar.fragment.CalendarPagerFragmentStateAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = javaClass.simpleName
+    lateinit var binding: ActivityMainBinding
 
-    lateinit var pagerAdapter: PagerFragmentStateAdapter
+    lateinit var calendarViewPager: ViewPager2
 
-    companion object {
-        var instance: MainActivity? = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = BaseFragmentFactory(Int.MAX_VALUE / 2)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        instance = this
+        calendarViewPager = binding.mainPager
 
-        setContentView(R.layout.activity_main)
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.add(
-//                R.id.fragmentFrame,
-//                TimerFragment()
-//        )
-//        transaction.commit()
-
-        pagerAdapter = PagerFragmentStateAdapter(this)
-
-        // 3개의 Fragment Add
-        pagerAdapter.addFragment(FirstFragment())
-
-
-        // ViewPager2 Adapter
-        main_pager.adapter = pagerAdapter
-        main_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                Log.e("MainViewPager", "Page ${position + 1}")
-            }
-        })
-
+        initView()
     }
 
-    override fun onBackPressed() {
+    private fun initView() {
+        val calendarPagerFragmentStateAdapter = CalendarPagerFragmentStateAdapter(this)
+        calendarViewPager.adapter = calendarPagerFragmentStateAdapter
+        calendarViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+        calendarPagerFragmentStateAdapter.apply {
+            calendarViewPager.setCurrentItem(this.firstFragmentPosition, false)
+        }
+    }
+
+/*    override fun onBackPressed() {
         val fragmentManager: FragmentManager = supportFragmentManager
         for (fragment in fragmentManager.fragments) {
             if (fragment.isVisible) {
@@ -66,5 +45,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         super.onBackPressed()
-    }
+    }*/
 }

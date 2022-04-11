@@ -9,12 +9,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
-import kotlinx.android.synthetic.main.list_item_calendar.view.*
+import com.example.calendar.databinding.ListItemCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class CalendarAdapter(val context: Context, val calendarLayout: LinearLayout, val date: Date) :
+class CalendarAdapter(
+    private val context: Context,
+    private val calendarLayout: LinearLayout,
+    val date: Date
+) :
     RecyclerView.Adapter<CalendarAdapter.CalendarItemHolder>() {
 
     private val TAG = javaClass.simpleName
@@ -22,10 +25,11 @@ class CalendarAdapter(val context: Context, val calendarLayout: LinearLayout, va
 
 
     // FurangCalendar을 이용하여 날짜 리스트 세팅
-    var furangCalendar: FurangCalendar = FurangCalendar(date)
+    var myCalendar: MyCalendar = MyCalendar(date)
+
     init {
-        furangCalendar.initBaseCalendar()
-        dataList = furangCalendar.dateList
+        myCalendar.initBaseCalendar()
+        dataList = myCalendar.dateList
     }
 
     interface ItemClick {
@@ -34,40 +38,48 @@ class CalendarAdapter(val context: Context, val calendarLayout: LinearLayout, va
 
     var itemClick: ItemClick? = null
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarItemHolder {
+        val binding =
+            ListItemCalendarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CalendarItemHolder(binding, myCalendar, dataList, date)
+    }
+
+
     override fun onBindViewHolder(holder: CalendarItemHolder, position: Int) {
 
         // list_item_calendar 높이 지정
         val h = calendarLayout.height / 6
         holder.itemView.layoutParams.height = h
 
-        holder?.bind(dataList[position], position, context)
+        holder.bind(dataList[position], position, context)
         if (itemClick != null) {
-            holder?.itemView?.setOnClickListener { v ->
+            holder.itemView.setOnClickListener { v ->
                 itemClick?.onClick(v, position)
 
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarItemHolder {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.list_item_calendar, parent, false)
-        return CalendarItemHolder(view)
-    }
 
     override fun getItemCount(): Int = dataList.size
 
-    inner class CalendarItemHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
+    class CalendarItemHolder(
+        private val binding: ListItemCalendarBinding,
+        private val myCalendar: MyCalendar,
+        private val dataList: ArrayList<Int>,
+        private val date: Date
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        var itemCalendarDateText: TextView = itemView!!.item_calendar_date_text
-        var itemCalendarDotView: View = itemView!!.item_calendar_dot_view
+        var itemCalendarDateText: TextView = binding.itemCalendarDateText
+        var itemCalendarDotView: View = binding.itemCalendarDotView
 
         fun bind(data: Int, position: Int, context: Context) {
 //            Log.d(TAG, "${furangCalendar.prevTail}, ${furangCalendar.nextHead}")
-            val firstDateIndex:Int = furangCalendar.prevTail
-            val lastDateIndex:Int = dataList.size - furangCalendar.nextHead - 1
+            val firstDateIndex: Int = myCalendar.prevTail
+            val lastDateIndex: Int = dataList.size - myCalendar.nextHead - 1
 
-            itemCalendarDateText.setText(data.toString())
+            itemCalendarDateText.text = data.toString()
 
             // 오늘 날짜 처리
             var dateString: String = SimpleDateFormat("dd", Locale.KOREA).format(date)
