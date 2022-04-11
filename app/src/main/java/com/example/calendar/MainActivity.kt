@@ -8,9 +8,9 @@ import com.example.calendar.fragment.CalendarPagerFragmentStateAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
-    lateinit var calendarViewPager: ViewPager2
+    private lateinit var calendarViewPager: ViewPager2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         calendarViewPager.adapter = calendarPagerFragmentStateAdapter
         calendarViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
         calendarPagerFragmentStateAdapter.apply {
-            calendarViewPager.setCurrentItem(this.firstFragmentPosition, false)
+            calendarViewPager.setCurrentItem(this.fragmentPosition, false)
         }
     }
 

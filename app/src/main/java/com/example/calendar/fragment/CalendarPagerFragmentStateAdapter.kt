@@ -8,14 +8,13 @@ class CalendarPagerFragmentStateAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
     private val pageCount = Int.MAX_VALUE
-    val firstFragmentPosition = Int.MAX_VALUE / 2
+    val fragmentPosition = Int.MAX_VALUE / 2
 
     override fun getItemCount(): Int = pageCount
 
     override fun createFragment(position: Int): Fragment {
-        val calendarFragment = CalendarFragment(position)
-//        calendarFragment.pageIndex = position
-        return calendarFragment
+        //        calendarFragment.pageIndex = position
+        return CalendarFragment(position)
     }
 //    override fun createFragment(position: Int): Fragment =
 //        CalendarFragment(position)
