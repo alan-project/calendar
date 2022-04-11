@@ -13,14 +13,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.MainActivity
 import com.example.calendar.R
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import com.example.calendar.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment(index: Int) : Fragment() {
 
     private val TAG = javaClass.simpleName
+
+    private var _binding:FragmentCalendarBinding? = null
+    private val binding get() = _binding!!
+
     lateinit var mContext: Context
     lateinit var mActivity: MainActivity
 
@@ -32,9 +35,7 @@ class CalendarFragment(index: Int) : Fragment() {
     lateinit var calendar_view: RecyclerView
     lateinit var calendarAdapter: CalendarAdapter
 
-    companion object {
-        var instance: CalendarFragment? = null
-    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,44 +47,43 @@ class CalendarFragment(index: Int) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        instance = this
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_calendar, container, false)
-        initView(view)
+        _binding = FragmentCalendarBinding.inflate(inflater,container,false)
+        initView()
         initCalendar()
-        return view
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
 
-    fun initView(view: View) {
+    private fun initView() {
         pageIndex -= (Int.MAX_VALUE / 2)
         Log.e(TAG, "Calender Index: $pageIndex")
-        calendar_year_month_text = view.calendar_year_month_text
-        calendar_layout = view.calendar_layout
-        calendar_view = view.calendar_view
+        if(_binding!=null){
+            calendar_year_month_text = _binding!!.calendarYearMonthText
+            calendar_layout = _binding!!.calendarLayout
+            calendar_view = _binding!!.calendarView
+        }
+
         val date = Calendar.getInstance().run {
             add(Calendar.MONTH, pageIndex)
             time
         }
         currentDate = date
         Log.e(TAG, "$date")
-        var datetime: String = SimpleDateFormat(
+        val datetime: String = SimpleDateFormat(
             mContext.getString(R.string.calendar_year_month_format),
             Locale.KOREA
         ).format(date.time)
         calendar_year_month_text.setText(datetime)
     }
 
-    fun initCalendar() {
+    private fun initCalendar() {
         // 각 월의 1일의 요일을 구해
         // 첫 주의 일요일~해당 요일 전까지는 ""으로
         // 말일까지 해당 날짜
@@ -93,11 +93,12 @@ class CalendarFragment(index: Int) : Fragment() {
         calendar_view.adapter = calendarAdapter
         calendar_view.layoutManager = GridLayoutManager(mContext, 7, GridLayoutManager.VERTICAL, false)
         calendar_view.setHasFixedSize(true)
-        calendarAdapter.itemClick = object :
+   /*     calendarAdapter.itemClick = object :
             CalendarAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val firstDateIndex = calendarAdapter.dataList.indexOf(1)
-                val lastDateIndex = calendarAdapter.dataList.lastIndexOf(calendarAdapter.furangCalendar.currentMaxDate)
+                val lastDateIndex =
+                    calendarAdapter.dataList.lastIndexOf(calendarAdapter.furangCalendar.currentMaxDate)
                 // 현재 월의 1일 이전, 현재 월의 마지막일 이후는 터치 disable
                 if (position < firstDateIndex || position > lastDateIndex) {
                     return
@@ -109,11 +110,11 @@ class CalendarFragment(index: Int) : Fragment() {
                 val mainViewPager = mActivity.main_pager
                 mainViewPager.currentItem = 1
             }
-        }
+        }*/
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        instance = null
+        _binding = null
     }
 }
