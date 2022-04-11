@@ -24,8 +24,6 @@ class CalendarFragment(index: Int) : Fragment() {
     private var _binding:FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mContext: Context
-    private lateinit var mActivity: MainActivity
 
     private var pageIndex = index
     private lateinit var currentDate: Date
@@ -34,16 +32,6 @@ class CalendarFragment(index: Int) : Fragment() {
     private lateinit var calendarLayout: LinearLayout
     private lateinit var calendarView: RecyclerView
     private lateinit var calendarAdapter: CalendarAdapter
-
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MainActivity) {
-            mContext = context
-            mActivity = activity as MainActivity
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,7 +80,7 @@ class CalendarFragment(index: Int) : Fragment() {
         // CalendarAdapter로 List를 넘김
         calendarAdapter = CalendarAdapter(calendarLayout, currentDate)
         calendarView.adapter = calendarAdapter
-        calendarView.layoutManager = GridLayoutManager(mContext, 7, GridLayoutManager.VERTICAL, false)
+        calendarView.layoutManager = GridLayoutManager(requireContext(), 7, GridLayoutManager.VERTICAL, false)
         calendarView.setHasFixedSize(true)
    /*     calendarAdapter.itemClick = object :
             CalendarAdapter.ItemClick {
