@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.calendar.databinding.ActivityMainBinding
-import com.example.calendar.fragment.CalendarFragment
 import com.example.calendar.fragment.CalendarPagerFragmentStateAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -32,18 +31,4 @@ class MainActivity : AppCompatActivity() {
             calendarViewPager.setCurrentItem(this.fragmentPosition, false)
         }
     }
-
-/*    override fun onBackPressed() {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        for (fragment in fragmentManager.fragments) {
-            if (fragment.isVisible) {
-                val chilFrag: FragmentManager = fragment.childFragmentManager
-                if (chilFrag.backStackEntryCount > 0) {
-                    chilFrag.popBackStack()
-                    return
-                }
-            }
-        }
-        super.onBackPressed()
-    }*/
 }

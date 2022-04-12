@@ -15,13 +15,12 @@ import java.util.*
 class CalendarAdapter(
     private val calendarLayout: LinearLayout,
     private val date: Date
-) :
-    RecyclerView.Adapter<CalendarAdapter.CalendarItemHolder>() {
+) : RecyclerView.Adapter<CalendarAdapter.CalendarItemHolder>() {
 
-    private val TAG = javaClass.simpleName
-    var dataList: ArrayList<Int> = arrayListOf()
-
-    var myCalendar: MyCalendar = MyCalendar(date)
+    private var dataList: ArrayList<Int> = arrayListOf()
+    private val myCalendar: MyCalendar by lazy {
+        MyCalendar(date)
+    }
 
     init {
         myCalendar.initBaseCalendar()
@@ -43,7 +42,7 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarItemHolder, position: Int) {
 
-        // list_item_calendar 높이 지정
+        // list_item_calendar height
         val h = calendarLayout.height / 6
         holder.itemView.layoutParams.height = h
 
@@ -55,7 +54,6 @@ class CalendarAdapter(
             }
         }
     }
-
 
     override fun getItemCount(): Int = dataList.size
 
@@ -71,20 +69,19 @@ class CalendarAdapter(
         var itemCalendarDotView: View = binding.itemCalendarDotView
 
         fun bind(data: Int, position: Int) {
-//            Log.d(TAG, "${furangCalendar.prevTail}, ${furangCalendar.nextHead}")
             val firstDateIndex: Int = myCalendar.prevTail
             val lastDateIndex: Int = dataList.size - myCalendar.nextHead - 1
 
             itemCalendarDateText.text = data.toString()
 
             // 오늘 날짜 처리
-            var dateString: String = SimpleDateFormat("dd", Locale.KOREA).format(date)
-            var dateInt = dateString.toInt()
+            val dateString: String = SimpleDateFormat("dd", Locale.KOREA).format(date)
+            val dateInt = dateString.toInt()
             if (dataList[position] == dateInt) {
                 itemCalendarDateText.setTypeface(itemCalendarDateText.typeface, Typeface.BOLD)
             }
 
-            // 현재 월의 1일 이전, 현재 월의 마지막일 이후 값의 텍스트를 회색처리
+            // colored(gray) for days from prev, next month
             if (position < firstDateIndex || position > lastDateIndex) {
                 itemCalendarDateText.setTextAppearance(R.style.LightColorTextViewStyle)
                 itemCalendarDotView.background = null

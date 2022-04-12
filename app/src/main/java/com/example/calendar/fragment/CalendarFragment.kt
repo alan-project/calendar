@@ -16,7 +16,7 @@ import java.util.*
 
 class CalendarFragment() : Fragment() {
 
-    private var _binding:FragmentCalendarBinding? = null
+    private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
 
@@ -34,8 +34,8 @@ class CalendarFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        Log.d("AlanKim","pageIndex: $pageIndex")
-        _binding = FragmentCalendarBinding.inflate(inflater,container,false)
+        Log.d("AlanKim", "pageIndex: $pageIndex")
+        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
         initView()
         initCalendar()
@@ -44,11 +44,11 @@ class CalendarFragment() : Fragment() {
     }
 
     private fun initView() {
-        pageIndex = arguments?.getInt("pos")?:0
+        pageIndex = arguments?.getInt("pos") ?: 0
 
         pageIndex -= (Int.MAX_VALUE / 2)
         Log.e("AlanKim", "Calender Index: $pageIndex")
-        if(_binding!=null){
+        if (_binding != null) {
             calendarYearMonthText = _binding!!.calendarYearMonthText
             calendarLayout = _binding!!.calendarLayout
             calendarView = _binding!!.calendarView
@@ -68,22 +68,29 @@ class CalendarFragment() : Fragment() {
     }
 
     private fun initCalendar() {
+
+        calendarAdapter = CalendarAdapter(calendarLayout, currentDate)
+        calendarView.adapter = calendarAdapter
+        calendarView.layoutManager =
+            GridLayoutManager(requireContext(), 7, GridLayoutManager.VERTICAL, false)
+        calendarView.setHasFixedSize(true)
+
+
+/*
+
         // 각 월의 1일의 요일을 구해
         // 첫 주의 일요일~해당 요일 전까지는 ""으로
         // 말일까지 해당 날짜
         // 마지막 날짜 뒤로는 ""으로 처리하여
         // CalendarAdapter로 List를 넘김
-        calendarAdapter = CalendarAdapter(calendarLayout, currentDate)
-        calendarView.adapter = calendarAdapter
-        calendarView.layoutManager = GridLayoutManager(requireContext(), 7, GridLayoutManager.VERTICAL, false)
-        calendarView.setHasFixedSize(true)
-/*        calendarAdapter.itemClick = object :
+
+        calendarAdapter.itemClick = object :
             CalendarAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val firstDateIndex = calendarAdapter.dataList.indexOf(1)
                 val lastDateIndex =
                     calendarAdapter.dataList.lastIndexOf(calendarAdapter.myCalendar.currentMaxDate)
-                // 현재 월의 1일 이전, 현재 월의 마지막일 이후는 터치 disable
+                // disable click of dates from pre, next month
                 if (position < firstDateIndex || position > lastDateIndex) {
                     return
                 }

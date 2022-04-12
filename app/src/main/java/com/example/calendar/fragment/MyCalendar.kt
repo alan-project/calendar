@@ -39,6 +39,13 @@ class MyCalendar(date: Date) {
         makeCurrentMonth(calendar)
 
         nextHead = LOW_OF_CALENDAR * DAYS_OF_WEEK - (prevTail + currentMaxDate)
+
+/*
+        //if we need to hide last week, enable below
+        if(nextHead>7){
+            nextHead -= 7
+        }
+*/
         makeNextHead()
     }
 
