@@ -1,6 +1,8 @@
 package com.example.calendar.fragment
 
+import android.os.Bundle
 import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -16,7 +18,10 @@ class CalendarPagerFragmentStateAdapter(fa: FragmentActivity) :
     override fun createFragment(position: Int): Fragment {
         Log.d("AlanKim","position = $position")
         //        calendarFragment.pageIndex = position
-        return CalendarFragment(position)
+
+        return CalendarFragment().apply {
+            arguments = bundleOf("pos" to position)
+        }
     }
 //    override fun createFragment(position: Int): Fragment =
 //        CalendarFragment(position)

@@ -14,13 +14,14 @@ import com.example.calendar.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarFragment(index: Int) : Fragment() {
+class CalendarFragment() : Fragment() {
 
     private var _binding:FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
 
-    private var pageIndex = index
+    //temp
+    private var pageIndex = 0
     private lateinit var currentDate: Date
 
     private lateinit var calendarYearMonthText: TextView
@@ -34,14 +35,17 @@ class CalendarFragment(index: Int) : Fragment() {
     ): View {
 
         Log.d("AlanKim","pageIndex: $pageIndex")
-        // Inflate the layout for this fragment
         _binding = FragmentCalendarBinding.inflate(inflater,container,false)
+
         initView()
         initCalendar()
+
         return binding.root
     }
 
     private fun initView() {
+        pageIndex = arguments?.getInt("pos")?:0
+
         pageIndex -= (Int.MAX_VALUE / 2)
         Log.e("AlanKim", "Calender Index: $pageIndex")
         if(_binding!=null){
