@@ -1,6 +1,5 @@
 package com.example.calendar.fragment
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -14,17 +13,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarAdapter(
-    private val context: Context,
     private val calendarLayout: LinearLayout,
-    val date: Date
+    private val date: Date
 ) :
     RecyclerView.Adapter<CalendarAdapter.CalendarItemHolder>() {
 
     private val TAG = javaClass.simpleName
     var dataList: ArrayList<Int> = arrayListOf()
 
-
-    // FurangCalendar을 이용하여 날짜 리스트 세팅
     var myCalendar: MyCalendar = MyCalendar(date)
 
     init {
@@ -51,7 +47,7 @@ class CalendarAdapter(
         val h = calendarLayout.height / 6
         holder.itemView.layoutParams.height = h
 
-        holder.bind(dataList[position], position, context)
+        holder.bind(dataList[position], position)
         if (itemClick != null) {
             holder.itemView.setOnClickListener { v ->
                 itemClick?.onClick(v, position)
@@ -64,7 +60,7 @@ class CalendarAdapter(
     override fun getItemCount(): Int = dataList.size
 
     class CalendarItemHolder(
-        private val binding: ListItemCalendarBinding,
+        binding: ListItemCalendarBinding,
         private val myCalendar: MyCalendar,
         private val dataList: ArrayList<Int>,
         private val date: Date
@@ -74,7 +70,7 @@ class CalendarAdapter(
         var itemCalendarDateText: TextView = binding.itemCalendarDateText
         var itemCalendarDotView: View = binding.itemCalendarDotView
 
-        fun bind(data: Int, position: Int, context: Context) {
+        fun bind(data: Int, position: Int) {
 //            Log.d(TAG, "${furangCalendar.prevTail}, ${furangCalendar.nextHead}")
             val firstDateIndex: Int = myCalendar.prevTail
             val lastDateIndex: Int = dataList.size - myCalendar.nextHead - 1

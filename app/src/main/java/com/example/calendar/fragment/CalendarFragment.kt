@@ -1,6 +1,5 @@
 package com.example.calendar.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,48 +10,30 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.MainActivity
-import com.example.calendar.R
 import com.example.calendar.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment(index: Int) : Fragment() {
 
-    private val TAG = javaClass.simpleName
-
     private var _binding:FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var mContext: Context
-    lateinit var mActivity: MainActivity
 
-    var pageIndex = index
-    lateinit var currentDate: Date
+    private var pageIndex = index
+    private lateinit var currentDate: Date
 
-    lateinit var calendar_year_month_text: TextView
-    lateinit var calendar_layout: LinearLayout
-    lateinit var calendar_view: RecyclerView
-    lateinit var calendarAdapter: CalendarAdapter
-
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MainActivity) {
-            mContext = context
-            mActivity = activity as MainActivity
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var calendarYearMonthText: TextView
+    private lateinit var calendarLayout: LinearLayout
+    private lateinit var calendarView: RecyclerView
+    private lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Log.d("AlanKim","pageIndex: $pageIndex")
         // Inflate the layout for this fragment
         _binding = FragmentCalendarBinding.inflate(inflater,container,false)
         initView()
@@ -60,14 +41,13 @@ class CalendarFragment(index: Int) : Fragment() {
         return binding.root
     }
 
-
     private fun initView() {
         pageIndex -= (Int.MAX_VALUE / 2)
-        Log.e(TAG, "Calender Index: $pageIndex")
+        Log.e("AlanKim", "Calender Index: $pageIndex")
         if(_binding!=null){
-            calendar_year_month_text = _binding!!.calendarYearMonthText
-            calendar_layout = _binding!!.calendarLayout
-            calendar_view = _binding!!.calendarView
+            calendarYearMonthText = _binding!!.calendarYearMonthText
+            calendarLayout = _binding!!.calendarLayout
+            calendarView = _binding!!.calendarView
         }
 
         val date = Calendar.getInstance().run {
@@ -75,12 +55,12 @@ class CalendarFragment(index: Int) : Fragment() {
             time
         }
         currentDate = date
-        Log.e(TAG, "$date")
+        Log.e("AlanKim", "$date")
         val datetime: String = SimpleDateFormat(
-            mContext.getString(R.string.calendar_year_month_format),
-            Locale.KOREA
+            "MMMM yyyy",
+            Locale.CANADA
         ).format(date.time)
-        calendar_year_month_text.setText(datetime)
+        calendarYearMonthText.text = datetime
     }
 
     private fun initCalendar() {
@@ -89,25 +69,25 @@ class CalendarFragment(index: Int) : Fragment() {
         // 말일까지 해당 날짜
         // 마지막 날짜 뒤로는 ""으로 처리하여
         // CalendarAdapter로 List를 넘김
-        calendarAdapter = CalendarAdapter(mContext, calendar_layout, currentDate)
-        calendar_view.adapter = calendarAdapter
-        calendar_view.layoutManager = GridLayoutManager(mContext, 7, GridLayoutManager.VERTICAL, false)
-        calendar_view.setHasFixedSize(true)
-   /*     calendarAdapter.itemClick = object :
+        calendarAdapter = CalendarAdapter(calendarLayout, currentDate)
+        calendarView.adapter = calendarAdapter
+        calendarView.layoutManager = GridLayoutManager(requireContext(), 7, GridLayoutManager.VERTICAL, false)
+        calendarView.setHasFixedSize(true)
+/*        calendarAdapter.itemClick = object :
             CalendarAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val firstDateIndex = calendarAdapter.dataList.indexOf(1)
                 val lastDateIndex =
-                    calendarAdapter.dataList.lastIndexOf(calendarAdapter.furangCalendar.currentMaxDate)
+                    calendarAdapter.dataList.lastIndexOf(calendarAdapter.myCalendar.currentMaxDate)
                 // 현재 월의 1일 이전, 현재 월의 마지막일 이후는 터치 disable
                 if (position < firstDateIndex || position > lastDateIndex) {
                     return
                 }
                 val day = calendarAdapter.dataList[position].toString()
                 val date = "${calendar_year_month_text.text}${day}일"
-                Log.d(TAG, "$date")
+                Log.d("AlanKim", "$date")
 
-                val mainViewPager = mActivity.main_pager
+                val mainViewPager = requireActivity().main_pager
                 mainViewPager.currentItem = 1
             }
         }*/
