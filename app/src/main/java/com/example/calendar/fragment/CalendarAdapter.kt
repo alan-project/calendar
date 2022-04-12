@@ -1,6 +1,5 @@
 package com.example.calendar.fragment
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import java.util.*
 
 class CalendarAdapter(
     private val calendarLayout: LinearLayout,
-    val date: Date
+    private val date: Date
 ) :
     RecyclerView.Adapter<CalendarAdapter.CalendarItemHolder>() {
 

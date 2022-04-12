@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.calendar.databinding.ActivityMainBinding
+import com.example.calendar.fragment.CalendarFragment
 import com.example.calendar.fragment.CalendarPagerFragmentStateAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         val calendarPagerFragmentStateAdapter = CalendarPagerFragmentStateAdapter(this)
         calendarViewPager.adapter = calendarPagerFragmentStateAdapter
-        calendarViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
         calendarPagerFragmentStateAdapter.apply {
             calendarViewPager.setCurrentItem(this.fragmentPosition, false)
         }

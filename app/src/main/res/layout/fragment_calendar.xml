@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/calendar_year_month_text"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="2020년 01월"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="January 2023"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:gravity="center_vertical|start"
-        android:layout_marginStart="20dp" />
+        android:textStyle="bold" />
 
     <View
         android:id="@+id/div"
@@ -27,54 +26,70 @@
         android:layout_height="30dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="SUN" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="MON" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="TUE" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="WED" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="THU" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="FRI" />
-        <TextView android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="SAT" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/calendar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:spanCount="7"
             android:adjustViewBounds="true"
             app:layout_constrainedHeight="true"
-            tools:listitem="@layout/list_item_calendar"/>
+            app:spanCount="7"
+            tools:listitem="@layout/list_item_calendar" />
     </LinearLayout>
 </LinearLayout>
